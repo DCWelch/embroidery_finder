@@ -92,7 +92,7 @@ Write-Host "Found $foundCount matching files" -ForegroundColor Green
 
 # Save results
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$outFile   = Join-Path $env:USERPROFILE ("Desktop\pes_scan_{0}.csv" -f $timestamp)
+$outFile   = Join-Path $scriptDir ("pes_scan_{0}.csv" -f $timestamp)
 
 $results |
     Sort-Object FullName -Unique |
