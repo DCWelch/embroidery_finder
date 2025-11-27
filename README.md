@@ -22,6 +22,9 @@ PowerShell version 5.1+ (most Windows PCs should have this if you are up to date
 3. Run the script:
    `.\find_pes_files.ps1`
 
+   Note: If you get a "", you need to enable running scripts using this command:
+   `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`
+
 ## Output
 
 After you run the script, you should see the following:
