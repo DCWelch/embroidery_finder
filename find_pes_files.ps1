@@ -28,7 +28,7 @@ if ($svg) { $extensionsToMatch += ".svg" }
 # COPY FEATURE: Create output folder next to this script
 # ======================
 
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
+$scriptDir  = Split-Path -Parent $MyInvocation.MyCommand.Definition
 $destFolder = Join-Path $scriptDir "embroidery_files_found"
 
 # If it already exists, append _2, _3, etc.
@@ -50,12 +50,15 @@ Write-Host ""
 
 Get-ChildItem -Path $Drive -Recurse -Force -ErrorAction SilentlyContinue |
     ForEach-Object {
+        # Skip anything inside the output folder (avoid recursive re-copying)
+        if ($_.FullName -like "$destFolder*") { return }
+
         $totalChecked++
 
         # Heartbeat (time-based)
         $now = Get-Date
         if (($now - $lastHeartbeat).TotalSeconds -ge $HeartbeatSeconds) {
-            $elapsed = $now - $startTime
+            $elapsed    = $now - $startTime
             $elapsedStr = $elapsed.ToString("hh\:mm\:ss")
             Write-Host "[Heartbeat] Checked: $($totalChecked) files | Found: $($foundCount) matches | Elapsed: $elapsedStr" -ForegroundColor DarkCyan
             $lastHeartbeat = $now
@@ -64,24 +67,17 @@ Get-ChildItem -Path $Drive -Recurse -Force -ErrorAction SilentlyContinue |
         # Skip directories
         if ($_.PSIsContainer) { return }
 
-        # Match extension
+        # Match allowed extensions
         $ext = $_.Extension
         if ($null -ne $ext -and $extensionsToMatch -contains $ext.ToLower()) {
             $foundCount++
 
-            $fileRecord = $_ | Select-Object `
-                Name,
-                FullName,
-                DirectoryName,
-                Length,
-                LastWriteTime,
-                LastAccessTime
-
+            $fileRecord = $_ | Select-Object Name, FullName, DirectoryName, Length, LastWriteTime, LastAccessTime
             $results += $fileRecord
 
             Write-Host "Found: $($_.FullName)" -ForegroundColor Yellow
 
-            # COPY FEATURE: Copy ONLY .pes files (not svg)
+            # Copy only .pes files
             if ($ext.ToLower() -eq ".pes") {
                 $destPath = Join-Path $destFolder $_.Name
                 Copy-Item -Path $_.FullName -Destination $destPath -ErrorAction SilentlyContinue
@@ -96,7 +92,7 @@ Write-Host "Found $foundCount matching files" -ForegroundColor Green
 
 # Save results
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$outFile = Join-Path $env:USERPROFILE ("Desktop\pes_scan_{0}.csv" -f $timestamp)
+$outFile   = Join-Path $env:USERPROFILE ("Desktop\pes_scan_{0}.csv" -f $timestamp)
 
 $results |
     Sort-Object FullName -Unique |
