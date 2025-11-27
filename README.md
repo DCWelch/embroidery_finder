@@ -18,8 +18,11 @@ PowerShell version 5.1+ (most Windows PCs should have this if you are up to date
 
 1. Download the script (find_pes_files.ps1) to your computer (e.g. clone the repo or just copy the script to your local machine)
 2. Open PowerShell and go to the folder where the script is:
+
    `cd path\to\the\folder`
-3. Run the script:
+   
+4. Run the script:
+
    `.\find_pes_files.ps1`
 
    Note: If you get a "", you need to enable running scripts using this command:
