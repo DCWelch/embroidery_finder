@@ -33,7 +33,7 @@ Note: If you get a message saying "running scripts is disabled on this system", 
 
 After you run the script, you should see the following:
 
-1. a folder called "embroidery_files_found" with a copy of all the .pes files it found
+1. A folder called "embroidery_files_found" with a copy of all the .pes files it found
 2. A summary .csv showing you where the .pes files were found
 3. This:
 
