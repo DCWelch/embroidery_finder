@@ -1,7 +1,7 @@
 param(
     [string]$Extension = "pes",    # main extension
     [string]$Drive = "C:\",        # drive to scan
-    [int]$HeartbeatSeconds = 10,   # heartbeat interval
+    [int]$HeartbeatSeconds = 2,    # heartbeat interval
     [switch]$svg                   # optional flag to include .svg
 )
 
