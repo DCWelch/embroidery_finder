@@ -50,8 +50,8 @@ Write-Host ""
 
 Get-ChildItem -Path $Drive -Recurse -Force -ErrorAction SilentlyContinue |
     ForEach-Object {
-        # Skip anything inside the output folder (avoid recursive re-copying)
-        if ($_.FullName -like "$destFolder*") { return }
+        # Skip ALL embroidery_files_found* folders (avoid recursive scanning of previous runs)
+        if ($_.FullName -like "$scriptDir\embroidery_files_found*") { return }
 
         $totalChecked++
 
